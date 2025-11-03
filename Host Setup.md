@@ -46,3 +46,4 @@ jailer --version
 # Clean up
 rm -rf /tmp/firecracker-${FIRECRACKER_VERSION}-x86_64.tgz release-${FIRECRACKER_VERSION}-x86_64
 ```
+```
