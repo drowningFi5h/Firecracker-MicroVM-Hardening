@@ -1,0 +1,48 @@
+```bash
+# Update system
+sudo apt-get update && sudo apt-get upgrade -y
+
+# Install build tools
+sudo apt-get install -y \
+    build-essential \
+    git \
+    curl \
+    wget \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    pkg-config \
+    cmake \
+    qemu-utils \
+    e2fsprogs \
+    dosfstools \
+    uuid-runtime \
+    parted \
+    debootstrap \
+    systemd-container
+
+# Create firecracker directories
+sudo mkdir -p /srv/firecracker/{kernels,rootfs}
+sudo mkdir -p /srv/jailer/firecracker
+sudo chmod 755 /srv/firecracker /srv/jailer
+
+# Download Firecracker v1.13.1 (or latest)
+FIRECRACKER_VERSION="v1.13.1"
+cd /tmp
+wget -q "https://github.com/firecracker-microvm/firecracker/releases/download/${FIRECRACKER_VERSION}/firecracker-${FIRECRACKER_VERSION}-x86_64.tgz"
+tar -xzf "firecracker-${FIRECRACKER_VERSION}-x86_64.tgz"
+
+# Install firecracker binary
+sudo install -D -m 755 "release-${FIRECRACKER_VERSION}-x86_64/firecracker-${FIRECRACKER_VERSION}-x86_64" \
+    /usr/local/bin/firecracker
+
+# Install jailer
+sudo install -D -m 755 "release-${FIRECRACKER_VERSION}-x86_64/jailer-${FIRECRACKER_VERSION}-x86_64" \
+    /usr/local/bin/jailer
+
+# Verify installation
+firecracker --version
+jailer --version
+
+# Clean up
+rm -rf /tmp/firecracker-${FIRECRACKER_VERSION}-x86_64.tgz release-${FIRECRACKER_VERSION}-x86_64
+```
